@@ -35,16 +35,16 @@ def initLogger(testing=False, container=True):
             ["/run/systemd/journal/syslog", "/var/run/syslog", "/device/log"]
         )
 
-    if logHandlerAddress:
-        syslog = SysLogHandler(
-            address=logHandlerAddress, facility=SysLogHandler.LOG_DAEMON
-        )
-        syslog.setFormatter(formatter)
-        logger.addHandler(syslog)
-    else:
-        stdout_handler = logging.StreamHandler()
-        stdout_handler.setFormatter(formatter)
-        logger.addHandler(stdout_handler)
+        if logHandlerAddress:
+            syslog = SysLogHandler(
+                address=logHandlerAddress, facility=SysLogHandler.LOG_DAEMON
+            )
+            syslog.setFormatter(formatter)
+            logger.addHandler(syslog)
+        else:
+            stdout_handler = logging.StreamHandler()
+            stdout_handler.setFormatter(formatter)
+            logger.addHandler(stdout_handler)
 
     if testing:
         log_to_console()
