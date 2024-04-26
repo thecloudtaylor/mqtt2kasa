@@ -18,7 +18,7 @@ def _log_handler_address(files=tuple()):
         return None
 
 
-def initLogger(testing=False):
+def initLogger(testing=False, container=True):
     logger = getLogger()
     logger.setLevel(logging.INFO)
 
@@ -27,10 +27,13 @@ def initLogger(testing=False):
     )
     formatter = logging.Formatter(format)
 
-    # Logs are normally configured here: /etc/rsyslog.d/*
-    logHandlerAddress = _log_handler_address(
-        ["/run/systemd/journal/syslog", "/var/run/syslog", "/device/log"]
-    )
+    if container:
+        log_to_console()
+    else:
+        # Logs are normally configured here: /etc/rsyslog.d/*
+        logHandlerAddress = _log_handler_address(
+            ["/run/systemd/journal/syslog", "/var/run/syslog", "/device/log"]
+        )
 
     if logHandlerAddress:
         syslog = SysLogHandler(
